@@ -1,10 +1,8 @@
-import ConfigParser
 import os
-import re
-
 import cherrypy
 
 import handlers
+
 
 class WebServer:
     @cherrypy.expose
