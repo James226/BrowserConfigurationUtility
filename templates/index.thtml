@@ -139,7 +139,7 @@
     <div class="content">
         <div class="configHeader">{ConfigFilename}</div>
         <div class="configContent">
-            <form method="post" action="/saveConfig/">
+            <form method="post" action="/">
                 <input type="hidden" name="filename" value="{ConfigFilename}" />
                 <!-- BEGIN configSection -->
                     <div class="configSection">
