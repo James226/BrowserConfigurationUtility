@@ -1,0 +1,171 @@
+<html>
+
+<head>
+	<title>Browser Configuration Utility</title>
+
+	<style>
+        html
+        {
+            background-color: #888888;
+            font-family: sans-serif;
+        }
+
+        .title
+        {
+            font-size: 4em;
+            margin-left: 30px;
+            margin-bottom: 30px;
+        }
+
+        .content
+        {
+            border: darkgrey solid 1px;
+            background: #333333;
+            padding: 10px;
+        }
+
+        .tabs
+        {
+            display: inline;
+            list-style-type: none;
+        }
+
+        .tabs li
+        {
+            margin-left: 10px;
+            background: #666666;
+            border-top: #333333 solid 1px;
+            border-left: #333333 solid 1px;
+            border-right: #333333 solid 1px;
+            border-radius: 5px 5px 0 0;
+            -moz-border-radius: 5px 5px 0 0;
+            padding: 5px;
+            float:left;
+        }
+
+        .tabs a
+        {
+            color: #111111;
+        }
+
+        #selectedTab
+        {
+            background: #333333;
+            font-weight: bold;
+        }
+
+        #selectedTab a
+        {
+            color: #AAAAAA;
+            text-decoration: none;
+        }
+
+        .configHeader
+        {
+            font-size: 2em;
+            color: #AAAAAA;
+        }
+
+        .configSection
+        {
+            background: #666666;
+            width: 400px;
+            float: left;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+            -moz-border-radius: 5px;
+        }
+
+        .configSectionName
+        {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .configItem
+        {
+            margin-bottom: 5px;
+        }
+
+        .actionButtons
+        {
+            text-align: center;
+        }
+
+        .actionButtons input
+        {
+            background: #777777;
+            border-radius: 5px;
+            -moz-border-radius: 5px;
+            color: #AAAAAA;
+            text-shadow: -1px -1px 0 #333, 1px -1px 0 #333, -1px 1px 0 #333, 1px 1px 0 #333;
+            font-weight: bold;
+            font-size: 1.5em;
+            margin: 10px;
+
+            -moz-box-shadow: 3px 3px 4px #000;
+            -webkit-box-shadow: 3px 3px 4px #000;
+            box-shadow: 3px 3px 4px #000;
+            -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000')";
+            filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000');
+        }
+
+        #save
+        {
+            background: url("/images/save.png") no-repeat scroll left center green;
+            background-position: 5px;
+            padding-left: 25px;
+        }
+
+        #reset
+        {
+            background: url("/images/cross.png") no-repeat scroll left center darkred;
+            background-position: 5px;
+            padding-left: 25px;
+        }
+	</style>
+</head>
+
+<body>
+    <div class="title">Browser Configuration Utility</div>
+
+    <ul class="tabs">
+        <!-- BEGIN fileTab -->
+        <li<!-- IF fileTab.Selected --> id="selectedTab"<!-- ENDIF -->><a href="/?filename={fileTab.Filename}">{fileTab.Filename}</a></li>
+        <!-- END fileTab -->
+    </ul>
+    <div style="clear: both;"></div>
+    <div class="content">
+        <div class="configHeader">{ConfigFilename}</div>
+        <div class="configContent">
+            <form method="post" action="/saveConfig/">
+                <input type="hidden" name="filename" value="{ConfigFilename}" />
+                <!-- BEGIN configSection -->
+                    <div class="configSection">
+                        <div class="configSectionName">{configSection.SectionName}</div>
+                        <table border="0" padding="0">
+                            <!-- BEGIN configItem -->
+                            <tr>
+                                <td>
+                                    <label for="{configSection.SectionName}.{configItem.ConfigName}">{configItem.ConfigName}: </label>
+                                </td>
+                                <td>
+                                    <input type="text" id="{configSection.SectionName}.{configItem.ConfigName}" name="configuration.{configSection.SectionName}.{configItem.ConfigName}" value="{configItem.ConfigValue}" />
+                                </td>
+                            </tr>
+                            <!-- END configItem -->
+                        </table>
+                    </div>
+                <!-- END configSection -->
+                <div style="clear: both;"></div>
+                <div class="actionButtons">
+                    <input type="submit" id="save" name="submit" value="Save" />
+                    <input type="reset" id="reset" name="reset" value="Reset" />
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
