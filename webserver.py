@@ -7,8 +7,11 @@ import handlers
 class WebServer:
     @cherrypy.expose
     def index(self, *args, **kwargs):
-        indexPage = handlers.index.index()
-        return indexPage.OutputPage(args, kwargs)
+        try:
+            indexPage = handlers.index.index(args, kwargs)
+            return indexPage.OutputPage()
+        except ValueError as error:
+            return error
 
 settings = os.path.join(os.path.dirname(__file__), 'settings.conf')
 
