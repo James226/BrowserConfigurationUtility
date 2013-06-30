@@ -8,17 +8,18 @@ class index(object):
     def __init__(self, args, kw):
         self.args = args
         self.kwargs = kw
+        self.configuration = utils.Configuration.Configuration()
 
-    def _SaveConfig(self, configuration):
+    def _SaveConfig(self):
 
         for (name, value) in self.kwargs.items():
             nameParts = name.split('.')
             if len(nameParts) == 3:
                 if nameParts[0] == 'configuration':
-                    if not nameParts[1] in configuration.config:
-                        configuration.config[nameParts[1]] = {}
-                    configuration.config[nameParts[1]][nameParts[2]] = value
-        configuration.WriteFile(self.completeFilename)
+                    if not nameParts[1] in self.configuration.config:
+                        self.configuration.config[nameParts[1]] = {}
+                    self.configuration.config[nameParts[1]][nameParts[2]] = value
+        self.configuration.WriteFile(self.completeFilename)
 
     def isValidFilename(self, filename):
         return re.match("([a-zA-Z0-9\-_ \(\)]+)\.([a-zA-Z0-9\-_]+)", filename) is None
@@ -33,10 +34,9 @@ class index(object):
         self.completeFilename = 'config/' + self.filename
         if self.isValidFilename(self.filename) or not os.path.exists(self.completeFilename):
             raise ValueError('Invalid filename specified: ' + self.filename)
-        configuration = utils.Configuration.Configuration()
 
         if 'submit' in self.kwargs:
-            self._SaveConfig(configuration)
+            self._SaveConfig()
 
         self.page = template.Load("index")
         self.page.SetVariable("ConfigFilename", self.filename)
@@ -47,9 +47,9 @@ class index(object):
                 'Filename': configFilename
             })
 
-        configuration.LoadFile(self.completeFilename)
+        self.configuration.LoadFile(self.completeFilename)
 
-        for (section, config) in configuration.config.items():
+        for (section, config) in self.configuration.config.items():
             sectionNest = self.page.AddNest("configSection", {
                 'SectionName': section
             })
