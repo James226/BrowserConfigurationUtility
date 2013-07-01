@@ -33,7 +33,7 @@
         .tabs li
         {
             margin-left: 10px;
-            background: #999999;
+            background: #B0C2CE;
             border-top: #333333 solid 1px;
             border-left: #333333 solid 1px;
             border-right: #333333 solid 1px;
