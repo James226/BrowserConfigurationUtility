@@ -16,7 +16,7 @@ class TestIndex(unittest.TestCase):
         global configurationSaved
         configurationSaved = False
 
-        def saveConfiguration(config):
+        def saveConfiguration():
             global configurationSaved
             configurationSaved = True
 

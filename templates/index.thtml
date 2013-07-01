@@ -15,8 +15,7 @@
         .title
         {
             font-size: 4em;
-            margin-left: 30px;
-            padding-bottom: 30px;
+            padding: 15px 0 30px 30px
         }
 
         .content
@@ -89,11 +88,6 @@
         {
             font-weight: bold;
             margin-bottom: 10px;
-        }
-
-        .configItem
-        {
-            margin-bottom: 5px;
         }
 
         .configSection input
