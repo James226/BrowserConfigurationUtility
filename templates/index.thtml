@@ -44,7 +44,7 @@
 
             box-shadow:
                 0 0 0 #fff, /*bottom external highlight*/
-                1px -1px 1px #666, /*top external shadow*/
+                1px -1px 1px #AAA, /*top external shadow*/
                 inset 0 -1px 1px rgba(0,0,0,0.5), /*bottom internal shadow*/
                 inset 0 1px 1px rgba(255,255,255,0.8); /*top internal highlight*/
         }
@@ -94,6 +94,13 @@
             margin-bottom: 5px;
         }
 
+        .configSection input
+        {
+            border: #959499 solid 1px;
+            border-radius: 3px;
+            padding-left: 4px;
+        }
+
         .actionButtons
         {
             text-align: center;
@@ -110,11 +117,11 @@
             font-size: 1.5em;
             margin: 10px;
 
-            -moz-box-shadow: 3px 3px 4px #555;
-            -webkit-box-shadow: 3px 3px 4px #555;
-            box-shadow: 3px 3px 4px #555;
-            -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000')";
-            filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000');
+            -moz-box-shadow: 3px 3px 4px #999;
+            -webkit-box-shadow: 3px 3px 4px #999;
+            box-shadow: 3px 3px 4px #999;
+            -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#999999')";
+            filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#999999');
         }
 
         #save
