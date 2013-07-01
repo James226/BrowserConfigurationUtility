@@ -23,6 +23,33 @@ class IniConfiguration(object):
         iniParser.write(stream)
 
 
+from xml.etree import ElementTree
+
+class XmlConfiguration(object):
+    def LoadStream(self, stream):
+        config = {}
+        xmlTree = ElementTree.parse(stream)
+        root = xmlTree.getroot()
+        self.PopulateNode(config, root)
+        return config
+
+    def LoadChildNodes(self, currentConfigElement, xmlNode):
+        for childNode in xmlNode:
+            self.PopulateNode(currentConfigElement, childNode)
+
+    def PopulateNode(self, currentConfigElement, xmlNode):
+        currentConfigElement[xmlNode.tag] = {}
+        self.LoadChildNodes(currentConfigElement[xmlNode.tag], xmlNode)
+        if xmlNode.text is not None:
+            currentConfigElement[xmlNode.tag]['Value'] = xmlNode.text
+
+        if len(xmlNode.attrib) > 0:
+            currentConfigElement[xmlNode.tag]['Attributes'] = xmlNode.attrib.copy()
+
+    def WriteStream(self, stream, config):
+        pass
+
+
 class Configuration(object):
     def __init__(self):
         self.config = {}
