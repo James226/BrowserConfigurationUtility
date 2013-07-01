@@ -6,7 +6,7 @@
 	<style>
         html
         {
-            background-color: #888888;
+            background-color: #DDDDDD;
             font-family: sans-serif;
         }
 
@@ -20,7 +20,7 @@
         .content
         {
             border: darkgrey solid 1px;
-            background: #333333;
+            background: #DEE6E9;
             padding: 10px;
         }
 
@@ -33,7 +33,7 @@
         .tabs li
         {
             margin-left: 10px;
-            background: #666666;
+            background: #999999;
             border-top: #333333 solid 1px;
             border-left: #333333 solid 1px;
             border-right: #333333 solid 1px;
@@ -56,25 +56,25 @@
 
         #selectedTab
         {
-            background: #333333;
+            background: #DEE6E9;
             font-weight: bold;
         }
 
         #selectedTab a
         {
-            color: #AAAAAA;
+            color: #666666;
             text-decoration: none;
         }
 
         .configHeader
         {
             font-size: 2em;
-            color: #AAAAAA;
+            color: #454545;
         }
 
         .configSection
         {
-            background: #666666;
+            background: #B0C2CE;
             width: 400px;
             float: left;
             padding: 10px;
@@ -104,15 +104,15 @@
             background: #777777;
             border-radius: 5px;
             -moz-border-radius: 5px;
-            color: #AAAAAA;
+            color: #DDDDDD;
             text-shadow: -1px -1px 0 #333, 1px -1px 0 #333, -1px 1px 0 #333, 1px 1px 0 #333;
             font-weight: bold;
             font-size: 1.5em;
             margin: 10px;
 
-            -moz-box-shadow: 3px 3px 4px #000;
-            -webkit-box-shadow: 3px 3px 4px #000;
-            box-shadow: 3px 3px 4px #000;
+            -moz-box-shadow: 3px 3px 4px #555;
+            -webkit-box-shadow: 3px 3px 4px #555;
+            box-shadow: 3px 3px 4px #555;
             -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000')";
             filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000');
         }
