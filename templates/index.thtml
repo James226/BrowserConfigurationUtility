@@ -148,8 +148,7 @@
         <li<!-- IF fileTab.Selected --> id="selectedTab"<!-- ENDIF -->><a href="/?filename={fileTab.Filename}">{fileTab.Filename}</a></li>
         <!-- END fileTab -->
     </ul>
-    <div style="clear: both;"></div>
-    <div class="content">
+    <div class="content" style="clear: both;">
         <div class="configHeader">{ConfigFilename}</div>
         <div class="configContent">
             <form method="post" action="/">
