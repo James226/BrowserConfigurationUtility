@@ -21,10 +21,10 @@ class TestConfiguration(unittest.TestCase):
         config = self.configuration.LoadStream(iniStream)
         self.assertDictEqual(config, {
             'Section1': {
-                'variable1': 'TestA',
-                'variable2': 'TestB'
+                'variable1': {'Value': 'TestA'},
+                'variable2': {'Value': 'TestB'}
             }, 'Section2': {
-                'variable3': 'TestC'
+                'variable3': {'Value': 'TestC'}
             }, 'Section3': {
 
             }})
@@ -39,13 +39,13 @@ class TestConfiguration(unittest.TestCase):
         iniStream.close()
         self.assertMultiLineEqual('[Section3]\n\n[Section2]\n\n[Section1]\n\n', iniContents)
 
-    def test_ShouldWriteSectionsWhenSaveFileCalled(self):
+    def test_ShouldWriteItemsWhenSaveFileCalled(self):
         config = {
             'Section1': {
-                'variable1': 'TestA',
-                'variable2': 'TestB'
+                'variable1': {'Value': 'TestA'},
+                'variable2': {'Value': 'TestB'}
             }, 'Section2': {
-                'variable3': 'TestC'
+                'variable3': {'Value': 'TestC'}
             }, 'Section3': {
 
             }}

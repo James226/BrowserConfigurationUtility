@@ -33,7 +33,7 @@ class index(object):
 
         self.completeFilename = 'config/' + self.filename
         if self.isValidFilename(self.filename) or not os.path.exists(self.completeFilename):
-            raise ValueError('Invalid filename specified: ' + self.filename)
+            return 'Invalid filename specified: ' + self.filename
 
         if 'submit' in self.kwargs:
             self._SaveConfig()
@@ -54,9 +54,10 @@ class index(object):
                 'SectionName': section
             })
             for (configName, configValue) in config.items():
-                self.page.AddSubNest(sectionNest, "configItem", {
-                    'ConfigName': configName,
-                    'ConfigValue': configValue
-                })
+                if configName != 'Value' and configName != 'Attributes':
+                    self.page.AddSubNest(sectionNest, "configItem", {
+                        'ConfigName': configName,
+                        'ConfigValue': configValue['Value']
+                    })
 
         return self.page.OutputPage()

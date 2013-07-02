@@ -30,10 +30,10 @@ class TestIndex(unittest.TestCase):
         indexPage.configuration.LoadFile = lambda filename: 0
         indexPage.configuration.config = {
             'Section1': {
-                'Variable1': 'TestA',
-                'Variable2': 'TestB'
+                'Variable1': {'Value': 'TestA'},
+                'Variable2': {'Value': 'TestB'}
             }, 'Section2': {
-                'Variable3': 'TestC'
+                'Variable3': {'Value': 'TestC'}
             }}
 
         indexPage.OutputPage()
