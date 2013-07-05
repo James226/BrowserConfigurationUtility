@@ -1,3 +1,4 @@
+import os
 import unittest
 
 import handlers.index
@@ -50,4 +51,14 @@ class TestIndex(unittest.TestCase):
         self.assertDictEqual({'ConfigName': 'Variable2', 'ConfigValue': 'TestB'},
                              indexPage.page.page.Nests['configSection'][1]['configItem'][1])
 
+    def test_shouldFilterDisplayedFilesBasedOnFileType(self):
+        indexPage = handlers.index.index((), {})
+
+        os.listdir = lambda path: ['Config1.ini', 'DirName', 'Config2.dat', 'Config3.config', 'Config4.ini']
+        indexPage.configuration.LoadFile = lambda filename: 0
+
+        indexPage.OutputPage()
+
+        self.assertEqual(indexPage.page.page.Nests['fileTab'][0]['Filename'], 'Config1.ini')
+        self.assertEqual(indexPage.page.page.Nests['fileTab'][1]['Filename'], 'Config4.ini')
 
