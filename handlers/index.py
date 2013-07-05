@@ -9,6 +9,7 @@ class index(object):
         self.args = args
         self.kwargs = kw
         self.configuration = utils.Configuration.Configuration()
+        self.configPath = 'config/'
 
     def _SaveConfig(self):
 
@@ -31,7 +32,7 @@ class index(object):
         else:
             self.filename = self.kwargs['filename']
 
-        self.completeFilename = 'config/' + self.filename
+        self.completeFilename = self.configPath + self.filename
         if self.isValidFilename(self.filename) or not os.path.exists(self.completeFilename):
             return 'Invalid filename specified: ' + self.filename
 
@@ -41,11 +42,13 @@ class index(object):
         self.page = template.Load("index")
         self.page.SetVariable("ConfigFilename", self.filename)
 
-        for configFilename in os.listdir('config/'):
-            self.page.AddNest('fileTab', {
-                'Selected': True if (configFilename == self.filename) else False,
-                'Filename': configFilename
-            })
+        for configFilename in os.listdir(self.configPath):
+            fileExtension = os.path.splitext(configFilename)[1]
+            if fileExtension == '.ini':
+                self.page.AddNest('fileTab', {
+                    'Selected': True if (configFilename == self.filename) else False,
+                    'Filename': configFilename
+                })
 
         self.configuration.LoadFile(self.completeFilename)
 
