@@ -1,4 +1,6 @@
 import ConfigParser
+import time
+import shutil
 import utils.Configuration
 
 from Giraffe.template import *
@@ -12,14 +14,22 @@ class index(object):
         self.configPath = 'config/'
 
     def _SaveConfig(self):
+        backupDir = self.configPath + 'backup/' + self.filename + '/'
+        if not os.path.exists(backupDir):
+            os.makedirs(backupDir)
 
+        localtime   = time.localtime()
+        timeString  = time.strftime("%Y%m%d%H%M%S", localtime)
+        fileNameParts = os.path.splitext(self.filename)
+        shutil.copy(self.completeFilename, '%s%s%s' % (backupDir, timeString, fileNameParts[1]))
+        
         for (name, value) in self.kwargs.items():
             nameParts = name.split('.')
             if len(nameParts) == 3:
                 if nameParts[0] == 'configuration':
                     if not nameParts[1] in self.configuration.config:
                         self.configuration.config[nameParts[1]] = {}
-                    self.configuration.config[nameParts[1]][nameParts[2]] = value
+                    self.configuration.config[nameParts[1]][nameParts[2]] = {'Value': value}
         self.configuration.WriteFile(self.completeFilename)
 
     def isValidFilename(self, filename):
