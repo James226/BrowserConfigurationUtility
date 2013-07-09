@@ -8,7 +8,6 @@ class WebServer:
     @cherrypy.expose
     def index(self, *args, **kwargs):
         try:
-            page = None
             if 'addSection' in kwargs:
                 page = handlers.addsection.AddSection(args, kwargs)
             else:
