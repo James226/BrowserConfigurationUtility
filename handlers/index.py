@@ -1,9 +1,8 @@
-import ConfigParser
 import time
 import shutil
 import utils.Configuration
 
-from Giraffe.template import *
+from Giraffe.template import template
 
 
 class index(object):
@@ -18,8 +17,8 @@ class index(object):
         if not os.path.exists(backupDir):
             os.makedirs(backupDir)
 
-        localtime   = time.localtime()
-        timeString  = time.strftime("%Y%m%d%H%M%S", localtime)
+        localtime = time.localtime()
+        timeString = time.strftime("%Y%m%d%H%M%S", localtime)
         fileNameParts = os.path.splitext(self.filename)
         shutil.copy(self.completeFilename, '%s%s%s' % (backupDir, timeString, fileNameParts[1]))
         
