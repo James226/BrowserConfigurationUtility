@@ -1,1 +1,209 @@
-{ConfigFilename}
+<html>
+
+<head>
+	<title>Browser Configuration Utility</title>
+
+	<style>
+        html
+        {
+            background-color: #DDDDDD;
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .title
+        {
+            font-size: 4em;
+            padding: 15px 0 30px 30px
+        }
+
+        .content
+        {
+            border: darkgrey solid 1px;
+            background: #DEE6E9;
+            padding: 10px;
+        }
+
+        .tabs
+        {
+            display: inline;
+            list-style-type: none;
+        }
+
+        .tabs li
+        {
+            margin-left: 10px;
+            background: #B0C2CE;
+            border-top: #333333 solid 1px;
+            border-left: #333333 solid 1px;
+            border-right: #333333 solid 1px;
+            border-radius: 5px 5px 0 0;
+            -moz-border-radius: 5px 5px 0 0;
+            padding: 5px;
+            float:left;
+
+            box-shadow:
+                0 0 0 #fff,
+                1px -1px 1px #AAA,
+                0 0 0 #fff,
+                inset 0 1px 1px rgba(255,255,255,0.8);
+        }
+
+        .tabs a
+        {
+            color: #111111;
+        }
+
+        #selectedTab
+        {
+            background: #DEE6E9;
+            font-weight: bold;
+        }
+
+        #selectedTab a
+        {
+            color: #666666;
+            text-decoration: none;
+        }
+
+        .configHeader
+        {
+            font-size: 2em;
+            color: #454545;
+        }
+
+        .configSection
+        {
+            border: 1px solid grey;
+            background: #B0C2CE;
+            width: 400px;
+            float: left;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+            -moz-border-radius: 5px;
+        }
+
+        input.addSectionButton
+        {
+            text-align: left;
+            font-weight: bold;
+            font-family: sans-serif;
+            font-size: 1em;
+            background: #B0C2CE url("/images/plus.png") no-repeat scroll 10px;
+            padding-left: 35px;
+        }
+
+        input.addSectionButton:hover
+        {
+            background-color: #a8bac6;
+        }
+
+        .configSectionName
+        {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .configSection input
+        {
+            border: #959499 solid 1px;
+            border-radius: 3px;
+            padding-left: 4px;
+        }
+
+        .largeConfigSection
+        {
+            width: 60%;
+            margin-left: auto ;
+            margin-right: auto ;
+            border: 1px solid grey;
+            background: #B0C2CE;
+            padding: 10px;
+            border-radius: 5px;
+            -moz-border-radius: 5px;
+        }
+
+        .actionButtons
+        {
+            text-align: center;
+        }
+
+        .actionButtons input
+        {
+            background: #777777;
+            border-radius: 5px;
+            -moz-border-radius: 5px;
+            color: #DDDDDD;
+            text-shadow: -1px -1px 0 #333, 1px -1px 0 #333, -1px 1px 0 #333, 1px 1px 0 #333;
+            font-weight: bold;
+            font-size: 1.5em;
+            margin: 10px;
+
+            -moz-box-shadow: 3px 3px 4px #999;
+            -webkit-box-shadow: 3px 3px 4px #999;
+            box-shadow: 3px 3px 4px #999;
+            -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#999999')";
+            filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#999999');
+        }
+
+        #save
+        {
+            background: green url("/images/save.png") no-repeat scroll 5px;
+            padding-left: 25px;
+        }
+
+        #reset
+        {
+            background: darkred url("/images/cross.png") no-repeat scroll 5px;
+            padding-left: 25px;
+        }
+
+        .errorBlock
+        {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: #ff6953;
+            border-top: red solid 2px;
+            border-bottom: red solid 2px;
+            color: darkred;
+            font-weight: bold;
+        }
+	</style>
+</head>
+
+<body>
+    <div class="title">Browser Configuration Utility</div>
+
+    <ul class="tabs">
+        <!-- BEGIN fileTab -->
+        <li<!-- IF fileTab.Selected --> id="selectedTab"<!-- ENDIF -->><a href="/?filename={fileTab.Filename}">{fileTab.Filename}</a></li>
+        <!-- END fileTab -->
+    </ul>
+    <div style="clear: both;"></div>
+    <div class="content">
+
+        <div class="configContent" style="text-align: center;">
+            <form method="post" action="/">
+                <input type="hidden" name="filename" value="{ConfigFilename}" />
+                <input type="hidden" name="addSection" value="addSection" />
+                <div class="largeConfigSection">
+                    <div class="configHeader" style="padding-bottom: 20px;">Add Section ({ConfigFilename})</div>
+                    <label for="sectionName">Section Name:</label>
+                    <input type="text" id="sectionName" name="sectionName" value="{SectionName}" />
+                    <!-- IF errorBlock -->
+                    <div class="errorBlock">{ErrorMessage}</div>
+                    <!-- ENDIF -->
+                    <div class="actionButtons">
+                        <input type="submit" id="save" name="saveSection" value="Save" />
+                        <input type="reset" id="reset" name="reset" value="Reset" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
