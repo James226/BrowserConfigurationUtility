@@ -23,14 +23,7 @@ class index(object):
         timeString = time.strftime("%Y%m%d%H%M%S", localtime)
         fileNameParts = os.path.splitext(self.filename)
         shutil.copy(self.completeFilename, '%s%s%s' % (backupDir, timeString, fileNameParts[1]))
-        
-        for (name, value) in self.kwargs.items():
-            nameParts = name.split('.')
-            if len(nameParts) == 3:
-                if nameParts[0] == 'configuration':
-                    if not nameParts[1] in self.configuration.config:
-                        self.configuration.config[nameParts[1]] = {}
-                    self.configuration.config[nameParts[1]][nameParts[2]] = {'Value': value}
+
         self.configuration.WriteFile(self.completeFilename)
 
     def isValidFilename(self, filename):
@@ -47,12 +40,32 @@ class index(object):
         if self.isValidFilename(self.filename) or not os.path.exists(self.completeFilename):
             return 'Invalid filename specified: ' + self.filename
 
+        self.configuration.LoadFile(self.completeFilename)
+
+        self.PopulateConfigurationFromForm()
+
         if 'submit' in self.kwargs:
             self._SaveConfig()
 
         self.page = template.Load("index")
         self.page.SetVariable("ConfigFilename", self.filename)
 
+        self.PopulateTabs()
+
+        self.PopulateConfigurationSections()
+
+        return self.page.OutputPage()
+
+    def PopulateConfigurationFromForm(self):
+        for (name, value) in self.kwargs.items():
+            nameParts = name.split('.')
+            if len(nameParts) == 3:
+                if nameParts[0] == 'configuration':
+                    if not nameParts[1] in self.configuration.config:
+                        self.configuration.config[nameParts[1]] = {}
+                    self.configuration.config[nameParts[1]][nameParts[2]] = {'Value': value}
+
+    def PopulateTabs(self):
         for configFilename in os.listdir(self.configPath):
             fileExtension = os.path.splitext(configFilename)[1]
             if fileExtension == '.ini':
@@ -61,8 +74,7 @@ class index(object):
                     'Filename': configFilename
                 })
 
-        self.configuration.LoadFile(self.completeFilename)
-
+    def PopulateConfigurationSections(self):
         for (section, config) in self.configuration.config.items():
             sectionNest = self.page.AddNest("configSection", {
                 'SectionName': section
@@ -74,4 +86,9 @@ class index(object):
                         'ConfigValue': configValue['Value']
                     })
 
-        return self.page.OutputPage()
+            if 'addItem.' + section in self.kwargs:
+                self.page.AddSubNest(sectionNest, "newConfigItem", {
+                    'ConfigNumber': '1',
+                    'ConfigName': '',
+                    'ConfigValue': ''
+                })

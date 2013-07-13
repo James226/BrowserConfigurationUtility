@@ -16,3 +16,15 @@ class testAddSection(unittest.TestCase):
         page.OutputPage()
         self.assertEqual('test.ini', page.page.page.Nests['']['ConfigFilename'])
 
+    def test_ShouldSaveSectionWhenSaveClicked(self):
+        global sectionSaved
+        sectionSaved = False
+
+        def SaveSection():
+            global sectionSaved
+            sectionSaved = True
+
+        page = addsection.AddSection((), {'saveSection': 'Value'})
+        page._SaveSection = SaveSection
+        page.OutputPage()
+        self.assertTrue(sectionSaved)

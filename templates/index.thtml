@@ -136,6 +136,11 @@
             filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#999999');
         }
 
+        .addItem
+        {
+            width: 100%;
+        }
+
         #save
         {
             background: green url("/images/save.png") no-repeat scroll 5px;
@@ -167,7 +172,7 @@
                 <!-- BEGIN configSection -->
                     <div class="configSection">
                         <div class="configSectionName">{configSection.SectionName}</div>
-                        <table border="0" padding="0">
+                        <table border="0" padding="0" width="100%">
                             <!-- BEGIN configItem -->
                             <tr>
                                 <td>
@@ -178,6 +183,21 @@
                                 </td>
                             </tr>
                             <!-- END configItem -->
+                            <!-- BEGIN newConfigItem -->
+                            <tr>
+                                <td>
+                                    <input type="text" name="configuration.{configSection.SectionName}.NewItemName.{newConfigItem.ConfigNumber}" value="{newConfigItem.ConfigName}" />
+                                </td>
+                                <td>
+                                    <input type="text" name="configuration.{configSection.SectionName}.NewItemValue.{newConfigItem.ConfigNumber}" value="{newConfigItem.ConfigValue}" />
+                                </td>
+                            </tr>
+                            <!-- END newConfigItem -->
+                            <tr>
+                                <td colspan="2">
+                                    <input class="addItem" type="submit" name="addItem.{configSection.SectionName}" value="+"/>
+                                </td>
+                            </tr>
                         </table>
                     </div>
                 <!-- END configSection -->
