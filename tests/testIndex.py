@@ -103,7 +103,7 @@ class TestIndex(unittest.TestCase):
         self.assertDictEqual({'ConfigName': 'Variable2', 'ConfigValue': 'TestE'},
                              indexPage.page.page.Nests['configSection'][1]['configItem'][1])
 
-    def test_ShouldNotRememberNewItemNameOrValueItems(self):
+    def test_ShouldNotRememberNewItemNameOrValueAsExistingItems(self):
         indexPage = handlers.index.index((), {
             'configuration.Section1.Variable1': 'TestD',
             'configuration.Section1.Variable2': 'TestE',
@@ -126,3 +126,29 @@ class TestIndex(unittest.TestCase):
         for configItem in indexPage.page.page.Nests['configSection'][0]['configItem']:
             self.assertNotEqual('NewItemName.1', configItem['ConfigName'])
             self.assertNotEqual('NewItemValue.1', configItem['ConfigName'])
+
+    def test_ShouldRememberNewItems(self):
+        indexPage = handlers.index.index((), {
+            'configuration.Section1.Variable1': 'TestD',
+            'configuration.Section1.Variable2': 'TestE',
+            'configuration.Section2.Variable1': 'TestF',
+            'configuration.Section2.NewItemName.1': 'Variable2',
+            'configuration.Section2.NewItemValue.1': 'TestG'
+        })
+
+        indexPage.configuration.LoadFile = lambda filename: 0
+        indexPage.configuration.config = {
+            'Section1': {
+                'Variable1': {'Value': 'TestA'},
+                'Variable2': {'Value': 'TestB'}
+            }, 'Section2': {
+                'Variable1': {'Value': 'TestC'}
+            }}
+
+        indexPage.OutputPage()
+
+        self.assertListEqual(
+            [
+                {'ConfigNumber': '1', 'ConfigName': 'Variable2', 'ConfigValue': 'TestG'}
+            ],
+            indexPage.page.page.Nests['configSection'][0]['newConfigItem'])
