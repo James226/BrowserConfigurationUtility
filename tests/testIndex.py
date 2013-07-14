@@ -21,7 +21,7 @@ class TestIndex(unittest.TestCase):
             global configurationSaved
             configurationSaved = True
 
-        indexPage._SaveConfig = saveConfiguration
+        indexPage.SaveConfig = saveConfiguration
         indexPage.OutputPage()
 
         self.assertTrue(configurationSaved)
@@ -152,3 +152,18 @@ class TestIndex(unittest.TestCase):
                 {'ConfigNumber': '1', 'ConfigName': 'Variable2', 'ConfigValue': 'TestG'}
             ],
             indexPage.page.page.Nests['configSection'][0]['newConfigItem'])
+
+    def test_ShouldSaveNewItemsWhenSaveConfigCalled(self):
+        indexPage = handlers.index.index((), {
+            'configuration.Section1.Variable1': 'TestD',
+            'configuration.Section1.Variable2': 'TestE',
+            'configuration.Section2.Variable1': 'TestF',
+            'configuration.Section2.NewItemName.1': 'Variable2',
+            'configuration.Section2.NewItemValue.1': 'TestG',
+            'submit': 'Save'
+        })
+
+        indexPage.SaveConfig = lambda: 0
+        indexPage.OutputPage()
+
+        self.assertDictEqual({}, indexPage.configuration.config['Section2']['NewItems'])

@@ -14,7 +14,7 @@ class index(object):
         self.configuration = utils.Configuration.Configuration()
         self.configPath = 'config/'
 
-    def _SaveConfig(self):
+    def SaveConfig(self):
         backupDir = self.configPath + 'backup/' + self.filename + '/'
         if not os.path.exists(backupDir):
             os.makedirs(backupDir)
@@ -25,6 +25,15 @@ class index(object):
         shutil.copy(self.completeFilename, '%s%s%s' % (backupDir, timeString, fileNameParts[1]))
 
         self.configuration.WriteFile(self.completeFilename)
+
+
+    def MergeNewConfigItemsWithExisting(self):
+        for (section, config) in self.configuration.config.items():
+            for (configName, configValue) in config.items():
+                if configName == 'NewItems':
+                    for (newItemName, newItemValue) in configValue.items():
+                        config[newItemValue['Name']] = {'Value': newItemValue['Value']}
+                    config['NewItems'] = {}
 
     def isValidFilename(self, filename):
         return re.match("([a-zA-Z0-9\-_ \(\)]+)\.([a-zA-Z0-9\-_]+)", filename) is None
@@ -45,7 +54,8 @@ class index(object):
         self.PopulateConfigurationFromForm()
 
         if 'submit' in self.kwargs:
-            self._SaveConfig()
+            self.MergeNewConfigItemsWithExisting()
+            self.SaveConfig()
 
         self.page = template.Load("index")
         self.page.SetVariable("ConfigFilename", self.filename)
