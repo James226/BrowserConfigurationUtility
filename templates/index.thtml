@@ -111,6 +111,7 @@
             border: #959499 solid 1px;
             border-radius: 3px;
             padding-left: 4px;
+            background-color: #f0f0f0;
         }
 
         .actionButtons
@@ -134,6 +135,26 @@
             box-shadow: 3px 3px 4px #999;
             -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#999999')";
             filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#999999');
+        }
+
+        .editButton
+        {
+            background: #f0f0f0 url("/images/edit.png") no-repeat scroll 4px;
+            border-radius: 2px;
+            -moz-border-radius: 2px;
+            color: #DDDDDD;
+            width: 20px;
+            height: 20px;
+        }
+
+        .deleteButton
+        {
+            background: #f0f0f0 url("/images/small-cross.png") no-repeat scroll 4px 4px;
+            border-radius: 2px;
+            -moz-border-radius: 2px;
+            color: #DDDDDD;
+            width: 20px;
+            height: 20px;
         }
 
         .addItem
@@ -171,6 +192,10 @@
                 <input type="hidden" name="filename" value="{ConfigFilename}" />
                 <!-- BEGIN configSection -->
                     <div class="configSection">
+                        <div style="float:right;">
+                            <input class="editButton" type="submit" name="edit.{configSection.SectionName}" value="&nbsp;" />
+                            <input class="deleteButton" type="submit" name="delete.{configSection.SectionName}" value="&nbsp;" />
+                        </div>
                         <div class="configSectionName">{configSection.SectionName}</div>
                         <table border="0" padding="0" width="100%">
                             <!-- BEGIN configItem -->
@@ -180,6 +205,8 @@
                                 </td>
                                 <td>
                                     <input type="text" id="{configSection.SectionName}.{configItem.ConfigName}" name="configuration.{configSection.SectionName}.{configItem.ConfigName}" value="{configItem.ConfigValue}" />
+                                    <input class="editButton" type="submit" name="edit.{configSection.SectionName}.{configItem.ConfigName}" value="&nbsp;" />
+                                    <input class="deleteButton" type="submit" name="delete.{configSection.SectionName}.{configItem.ConfigName}" value="&nbsp;" />
                                 </td>
                             </tr>
                             <!-- END configItem -->
