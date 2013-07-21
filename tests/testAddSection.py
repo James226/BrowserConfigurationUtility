@@ -1,5 +1,8 @@
+import os
 import unittest
 
+import utils.Configuration
+from utils.Configuration import ConfigurationItem
 from handlers import addsection
 
 
@@ -28,3 +31,35 @@ class testAddSection(unittest.TestCase):
         page._SaveSection = SaveSection
         page.OutputPage()
         self.assertTrue(sectionSaved)
+
+    def test_ShouldAddNewSectionToConfigurationWhenSaveSectionCalled(self):
+        global config
+        config = None
+        def TrueFunc(var1=None):
+            return True
+
+        def FalseFunc(var1=None):
+            return False
+
+        def LoadConfig(inst, filename):
+            inst.config = ConfigurationItem('', '')
+            
+
+        def CaptureConfig(inst, filename):
+            global config
+            config = inst.config
+
+        page = addsection.AddSection((), {'sectionName': 'NewSection', 'saveSection': 'Value'})
+        page.isValidFilename = FalseFunc
+        pathExists = os.path.exists
+        os.path.exists = TrueFunc
+        utils.Configuration.Configuration.LoadFile = LoadConfig
+        utils.Configuration.Configuration.WriteFile = CaptureConfig
+        
+        page._SaveSection()
+
+        os.path.exists = pathExists
+
+        self.assertEqual(config, ConfigurationItem('', '', [ConfigurationItem('NewSection', '')]))
+
+

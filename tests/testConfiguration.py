@@ -37,29 +37,36 @@ class TestConfiguration(unittest.TestCase):
         iniStream.close()
 
     def test_ShouldWriteSectionsWhenSaveFileCalled(self):
-        config = {'Section1': {}, 'Section2': {}, 'Section3': {}}
+        config = \
+            ConfigurationItem('', '', [
+                ConfigurationItem('Section1', ''),
+                ConfigurationItem('Section2', ''),
+                ConfigurationItem('Section3', '')
+            ])
 
         iniStream = cStringIO.StringIO()
         self.configuration.WriteStream(iniStream, config)
         iniContents = iniStream.getvalue()
         iniStream.close()
-        self.assertMultiLineEqual('[Section3]\n\n[Section2]\n\n[Section1]\n\n', iniContents)
+        self.assertMultiLineEqual('[Section1]\n\n[Section2]\n\n[Section3]\n\n', iniContents)
 
     def test_ShouldWriteItemsWhenSaveFileCalled(self):
-        config = {
-            'Section1': {
-                'variable1': {'Value': 'TestA'},
-                'variable2': {'Value': 'TestB'}
-            }, 'Section2': {
-                'variable3': {'Value': 'TestC'}
-            }, 'Section3': {
-
-            }}
+        config = \
+            ConfigurationItem('', '', [
+                ConfigurationItem('Section1', '', [
+                    ConfigurationItem('variable1', 'TestA'),
+                    ConfigurationItem('variable2', 'TestB')
+                ]),
+                ConfigurationItem('Section2', '', [
+                    ConfigurationItem('variable3', 'TestC'),
+                ]),
+                ConfigurationItem('Section3', '')
+            ])
 
         iniStream = cStringIO.StringIO()
         self.configuration.WriteStream(iniStream, config)
         iniContents = iniStream.getvalue()
         iniStream.close()
         self.assertMultiLineEqual(
-            '''[Section3]\n\n[Section2]\nvariable3 = TestC\n\n[Section1]\nvariable1 = TestA\nvariable2 = TestB\n\n''',
+            '''[Section1]\nvariable1 = TestA\nvariable2 = TestB\n\n[Section2]\nvariable3 = TestC\n\n[Section3]\n\n''',
             iniContents)

@@ -12,6 +12,7 @@ class AddSection(object):
         self.kwargs = kw
         self.error = ''
         self.configPath = 'config/'
+        self.filename = ''
 
     def _SaveSection(self):
 
@@ -32,7 +33,9 @@ class AddSection(object):
             self.error = 'Specified section name already exists'
             return False
 
-        config.config[self.kwargs['sectionName']] = {}
+        if self.kwargs['sectionName'] not in config.config:
+            config.config.AddChild(utils.Configuration.ConfigurationItem(self.kwargs['sectionName'], ''))
+        
         config.WriteFile(self.completeFilename)
 
         return True
