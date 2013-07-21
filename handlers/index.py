@@ -3,6 +3,7 @@ import re
 import time
 import shutil
 import utils.Configuration
+from utils.Configuration import ConfigurationItem
 
 from Giraffe.template import template
 
@@ -26,12 +27,11 @@ class index(object):
 
         self.configuration.WriteFile(self.completeFilename)
 
-
     def MergeNewConfigItemsWithExisting(self):
-        for (section, config) in self.configuration.config.items():
-            for (configName, configValue) in config.items():
-                if configName == 'NewItems':
-                    for (newItemName, newItemValue) in configValue.items():
+        for section in self.configuration.config:
+            for config in section:
+                if config.Name == 'NewItems':
+                    for (newItemName, newItemValue) in config:
                         config[newItemValue['Name']] = {'Value': newItemValue['Value']}
                     config['NewItems'] = {}
 
@@ -88,9 +88,17 @@ class index(object):
             self.configuration.config[splitName[1]]['NewItems'][splitName[3]]['Value'] = value
 
     def PopulateExistingConfigurationFromForm(self, splitName, value):
-        if not splitName[1] in self.configuration.config:
-            self.configuration.config[splitName[1]] = {}
-        self.configuration.config[splitName[1]][splitName[2]] = {'Value': value}
+        section = self.configuration.config[splitName[1]]
+        if section is None:
+            section = ConfigurationItem(splitName[1], '')
+            self.configuration.config.AddChild(section)
+
+        configItem = section[splitName[2]]
+        if configItem is None:
+            configItem = ConfigurationItem(splitName[2], value)
+            self.configuration.config[splitName[1]].AddChild(configItem)
+        else:
+            configItem.Value = value
 
     def PopulateTabs(self):
         for configFilename in os.listdir(self.configPath):
@@ -102,17 +110,20 @@ class index(object):
                 })
 
     def PopulateConfigurationSections(self):
-        for (section, config) in self.configuration.config.items():
+        for section in self.configuration.config:
+            nextItem = 1
             nextNewItem = 1
             sectionNest = self.page.AddNest("configSection", {
-                'SectionName': section
+                'SectionName': section.Name
             })
-            for (configName, configValue) in config.items():
-                if configName != 'Value' and configName != 'Attributes' and configName != 'NewItems':
+            for config in section:
+                if config.Name != 'Value' and config.Name != 'Attributes' and config.Name != 'NewItems':
                     self.page.AddSubNest(sectionNest, "configItem", {
-                        'ConfigName': configName,
-                        'ConfigValue': configValue['Value']
+                        'ConfigId': str(nextItem),
+                        'ConfigName': config.Name,
+                        'ConfigValue': config.Value
                     })
+                    nextItem += 1
                 elif configName == 'NewItems':
                     for (newItemName, newItemValue) in configValue.items():
                         self.page.AddSubNest(sectionNest, "newConfigItem", {
@@ -122,7 +133,7 @@ class index(object):
                         })
                         nextNewItem += 1
 
-            if 'addItem.' + section in self.kwargs:
+            if 'addItem.' + section.Name in self.kwargs:
                 self.page.AddSubNest(sectionNest, "newConfigItem", {
                     'ConfigNumber': str(nextNewItem),
                     'ConfigName': '',

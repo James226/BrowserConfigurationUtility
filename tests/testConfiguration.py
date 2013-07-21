@@ -3,6 +3,7 @@ import cStringIO
 
 import utils.Configuration
 
+from utils.Configuration import ConfigurationItem
 
 class TestConfiguration(unittest.TestCase):
     def setUp(self):
@@ -12,22 +13,27 @@ class TestConfiguration(unittest.TestCase):
         iniContents = "[Section1]\n\n[Section2]\n\n[Section3]"
         iniStream = cStringIO.StringIO(iniContents)
         config = self.configuration.LoadStream(iniStream)
-        self.assertDictEqual(config, {'Section1': {}, 'Section2': {}, 'Section3': {}})
+        self.assertEquals(config, ConfigurationItem('', '', [ConfigurationItem('Section1', ''), ConfigurationItem('Section2', ''), ConfigurationItem('Section3', '')]))
         iniStream.close()
 
     def test_ShouldPopulateItemsWhenLoadFileCalled(self):
-        iniContents = "[Section1]\nVariable1=TestA\nVariable2=TestB\n\n[Section2]\nVariable3=TestC\n\n[Section3]"
+        self.maxDiff = None
+        iniContents = "[Section1]\nvariable1=TestA\nvariable2=TestB\n\n[Section2]\nvariable3=TestC\n\n[Section3]"
         iniStream = cStringIO.StringIO(iniContents)
         config = self.configuration.LoadStream(iniStream)
-        self.assertDictEqual(config, {
-            'Section1': {
-                'variable1': {'Value': 'TestA'},
-                'variable2': {'Value': 'TestB'}
-            }, 'Section2': {
-                'variable3': {'Value': 'TestC'}
-            }, 'Section3': {
-
-            }})
+        self.assertEquals(config,
+            ConfigurationItem('', '', [
+                ConfigurationItem('Section1', '', 
+                    [
+                        ConfigurationItem('variable1', 'TestA'),
+                        ConfigurationItem('variable2', 'TestB')
+                    ]),
+                ConfigurationItem('Section2', '', 
+                    [
+                        ConfigurationItem('variable3', 'TestC')
+                    ]),
+                ConfigurationItem('Section3', '')
+            ]))
         iniStream.close()
 
     def test_ShouldWriteSectionsWhenSaveFileCalled(self):

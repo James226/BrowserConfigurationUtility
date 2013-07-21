@@ -2,26 +2,61 @@ import ConfigParser
 import os
 
 
+class ConfigurationItem(object):
+    def __init__(self, name, value, children=None):
+        self.Name = name
+        self.Value = value
+        self.children = children if children is not None else []
+
+    def __getitem__(self, index):
+        if isinstance(index, basestring):
+            for child in self.children:
+                if child.Name == index:
+                    return child
+            return None
+        else:
+            return self.children[index]
+
+    def __setitem__(self, index, value):
+        if isinstance(index, basestring):
+            for child in self.children:
+                if child.Name == index:
+                    child = value
+            self.children.append(child)
+        else:
+            self.children[index] = value
+
+    def AddChild(self, item):
+        self.children.append(item)
+        
+    def __eq__(self, other):
+        if isinstance(other, ConfigurationItem):
+            return \
+                self.Name == other.Name and \
+                self.Value == other.Value and \
+                all([(c == oc) for c, oc in zip(self.children, other.children)])
+        return False
+
 class IniConfiguration(object):
     def LoadStream(self, stream):
-        config = {}
+        config = ConfigurationItem('', '')
         iniParser = ConfigParser.ConfigParser()
         iniParser.readfp(stream)
         for section in iniParser.sections():
-            config[section] = {}
+            currentSection = ConfigurationItem(section, '')
+            config.AddChild(currentSection)
 
             for (configName, configValue) in iniParser.items(section):
-                config[section][configName] = {'Value': configValue}
+                currentSection.AddChild(ConfigurationItem(configName, configValue))
 
         return config
 
     def WriteStream(self, stream, config):
         iniParser = ConfigParser.ConfigParser()
-        for (section, config) in config.items():
-            iniParser.add_section(section)
-            for (name, value) in config.items():
-                if 'Value' in value:
-                    iniParser.set(section, name, value['Value'])
+        for section in config:
+            iniParser.add_section(section.Name)
+            for config in section:
+                iniParser.set(section.Name, config.Name, config.Value)
         iniParser.write(stream)
 
 
