@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{fc329c6f-6c10-4d04-b17e-baa6be9ae810}</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <StartupFile>webserver.py</StartupFile>
+    <SearchPath>\git</SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <Name>BrowserConfigurationUtility</Name>
+    <RootNamespace>BrowserConfigurationUtility</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="cache\addsection.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="cache\index.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="cache\Page.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="cache\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="handlers\addsection.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="handlers\index.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="handlers\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tests\testAddSection.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tests\testConfiguration.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tests\testIndex.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tests\testXmlConfiguration.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tests\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="utils\Configuration.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="utils\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="webserver.py">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="cache\" />
+    <Folder Include="config\" />
+    <Folder Include="handlers\" />
+    <Folder Include="images\" />
+    <Folder Include="templates\" />
+    <Folder Include="tests\" />
+    <Folder Include="utils\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="config\SampleIniFile - Copy %282%29.ini">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="config\SampleIniFile - Copy %283%29.ini">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="config\SampleIniFile - Copy.ini">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="config\SampleIniFile.ini">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="images\cross.png">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="images\edit.png">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="images\plus.png">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="images\save.png">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="images\small-cross.png">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="templates\addsection.thtml">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="templates\index.thtml">
+      <SubType>Content</SubType>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
+</Project>
