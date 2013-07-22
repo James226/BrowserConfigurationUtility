@@ -14,6 +14,7 @@ class index(object):
         self.kwargs = kw
         self.configuration = utils.Configuration.Configuration()
         self.configPath = 'config/'
+        self.newConfigurationItems = {}
 
     def SaveConfig(self):
         backupDir = self.configPath + 'backup/' + self.filename + '/'
@@ -28,12 +29,10 @@ class index(object):
         self.configuration.WriteFile(self.completeFilename)
 
     def MergeNewConfigItemsWithExisting(self):
-        for section in self.configuration.config:
-            for config in section:
-                if config.Name == 'NewItems':
-                    for (newItemName, newItemValue) in config:
-                        config[newItemValue['Name']] = {'Value': newItemValue['Value']}
-                    config['NewItems'] = {}
+        for (section, configSection) in self.newConfigurationItems.items():
+            for (configId, config) in configSection.items():
+                self.configuration.config[section].AddChild(ConfigurationItem(config['Name'], config['Value']))
+        self.newConfigurationItems = {}
 
     def isValidFilename(self, filename):
         return re.match("([a-zA-Z0-9\-_ \(\)]+)\.([a-zA-Z0-9\-_]+)", filename) is None
@@ -76,16 +75,14 @@ class index(object):
                     self.PopulateNewConfigurationFromForm(nameParts, value)
 
     def PopulateNewConfigurationFromForm(self, splitName, value):
-        if not splitName[1] in self.configuration.config:
-            self.configuration.config[splitName[1]] = {}
-        if not 'NewItems' in self.configuration.config[splitName[1]]:
-            self.configuration.config[splitName[1]]['NewItems'] = {}
-        if not splitName[3] in self.configuration.config[splitName[1]]['NewItems']:
-            self.configuration.config[splitName[1]]['NewItems'][splitName[3]] = {}
+        if not splitName[1] in self.newConfigurationItems:
+            self.newConfigurationItems[splitName[1]] = {}
+        if not splitName[3] in self.newConfigurationItems[splitName[1]]:
+            self.newConfigurationItems[splitName[1]][splitName[3]] = {}
         if splitName[2] == 'NewItemName':
-            self.configuration.config[splitName[1]]['NewItems'][splitName[3]]['Name'] = value
+            self.newConfigurationItems[splitName[1]][splitName[3]]['Name'] = value
         elif splitName[2] == 'NewItemValue':
-            self.configuration.config[splitName[1]]['NewItems'][splitName[3]]['Value'] = value
+            self.newConfigurationItems[splitName[1]][splitName[3]]['Value'] = value
 
     def PopulateExistingConfigurationFromForm(self, splitName, value):
         section = self.configuration.config[splitName[1]]
@@ -117,21 +114,20 @@ class index(object):
                 'SectionName': section.Name
             })
             for config in section:
-                if config.Name != 'Value' and config.Name != 'Attributes' and config.Name != 'NewItems':
-                    self.page.AddSubNest(sectionNest, "configItem", {
-                        'ConfigId': str(nextItem),
-                        'ConfigName': config.Name,
-                        'ConfigValue': config.Value
+                self.page.AddSubNest(sectionNest, "configItem", {
+                    'ConfigId': str(nextItem),
+                    'ConfigName': config.Name,
+                    'ConfigValue': config.Value
+                })
+                nextItem += 1
+            if section.Name in self.newConfigurationItems:
+                for (newItemId, newItem) in self.newConfigurationItems[section.Name].items():
+                    self.page.AddSubNest(sectionNest, "newConfigItem", {
+                        'ConfigNumber': str(nextNewItem),
+                        'ConfigName': newItem['Name'],
+                        'ConfigValue': newItem['Value']
                     })
-                    nextItem += 1
-                elif configName == 'NewItems':
-                    for (newItemName, newItemValue) in configValue.items():
-                        self.page.AddSubNest(sectionNest, "newConfigItem", {
-                            'ConfigNumber': str(nextNewItem),
-                            'ConfigName': newItemValue['Name'],
-                            'ConfigValue': newItemValue['Value']
-                        })
-                        nextNewItem += 1
+                    nextNewItem += 1
 
             if 'addItem.' + section.Name in self.kwargs:
                 self.page.AddSubNest(sectionNest, "newConfigItem", {

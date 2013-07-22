@@ -84,7 +84,7 @@ class TestIndex(unittest.TestCase):
         indexPage.OutputPage()
 
         self.assertListEqual([{'ConfigNumber': '1', 'ConfigName': '', 'ConfigValue': ''}],
-                             indexPage.page.page.Nests['configSection'][1]['newConfigItem'])
+                             indexPage.page.page.Nests['configSection'][0]['newConfigItem'])
 
     def test_ShouldRememberExistingConfigurationWhenNonSaveButtonPressed(self):
         indexPage = handlers.index.index((), {
@@ -167,22 +167,7 @@ class TestIndex(unittest.TestCase):
             [
                 {'ConfigNumber': '1', 'ConfigName': 'Variable2', 'ConfigValue': 'TestG'}
             ],
-            indexPage.page.page.Nests['configSection'][0]['newConfigItem'])
-
-    def test_ShouldSaveNewItemsWhenSaveConfigCalled(self):
-        indexPage = handlers.index.index((), {
-            'configuration.Section1.Variable1': 'TestD',
-            'configuration.Section1.Variable2': 'TestE',
-            'configuration.Section2.Variable1': 'TestF',
-            'configuration.Section2.NewItemName.1': 'Variable2',
-            'configuration.Section2.NewItemValue.1': 'TestG',
-            'submit': 'Save'
-        })
-
-        indexPage.SaveConfig = lambda: 0
-        indexPage.OutputPage()
-
-        self.assertDictEqual({}, indexPage.configuration.config['Section2']['NewItems'])
+            indexPage.page.page.Nests['configSection'][1]['newConfigItem'])
 
     def test_ShouldAddNewConfigurationSaveButtonPressed(self):
         indexPage = handlers.index.index((), {
@@ -197,4 +182,8 @@ class TestIndex(unittest.TestCase):
         indexPage.SaveConfig = lambda: 0
         indexPage.OutputPage()
 
-        self.assertDictEqual({}, indexPage.configuration.config['Section2']['NewItems'])
+        self.assertDictEqual({}, indexPage.newConfigurationItems)
+        self.assertListEqual(
+            [ConfigurationItem('Variable1', 'TestF'), ConfigurationItem('Variable2', 'TestG')], 
+            indexPage.configuration.config['Section2'].children
+        )
