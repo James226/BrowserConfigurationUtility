@@ -187,3 +187,24 @@ class TestIndex(unittest.TestCase):
             [ConfigurationItem('Variable1', 'TestF'), ConfigurationItem('Variable2', 'TestG')], 
             indexPage.configuration.config['Section2'].children
         )
+
+    def test_ShouldDefaultToSimpleModeWhenNoModeSet(self):
+        indexPage = handlers.index.index((), {})
+
+        indexPage.OutputPage()
+
+        self.assertFalse(indexPage.page.page.Nests['']['AdvancedMode'])
+
+    def test_ShouldSetAdvancedModeWhenAdvancedButtonPressed(self):
+        indexPage = handlers.index.index((), {'Mode': 'Advanced'})
+
+        indexPage.OutputPage()
+
+        self.assertTrue(indexPage.page.page.Nests['']['AdvancedMode'])
+
+    def test_ShouldRememberCurrentStateWhenNonModeButtonPressed(self):
+        indexPage = handlers.index.index((), {'CurrentMode': 'Advanced'})
+
+        indexPage.OutputPage()
+
+        self.assertTrue(indexPage.page.page.Nests['']['AdvancedMode'])

@@ -106,7 +106,7 @@
             margin-bottom: 10px;
         }
 
-        .configSection input
+        input
         {
             border: #959499 solid 1px;
             border-radius: 3px;
@@ -186,27 +186,41 @@
     </ul>
     <div style="clear: both;"></div>
     <div class="content">
-        <div class="configHeader">{ConfigFilename}</div>
-        <div class="configContent">
-            <form method="post" action="/">
+		<form method="post" action="/">
+			<!-- IF AdvancedMode -->
+			<input type="hidden" name="CurrentMode" value="Advanced" />
+			<!-- ELSE -->
+			<input type="hidden" name="CurrentMode" value="Simple" />
+			<!-- ENDIF -->
+			<div style="float:right;">
+				Mode: 
+				<input type="submit" name="Mode" value="Simple" />
+				<input type="submit" name="Mode" value="Advanced" />
+			</div>
+			<div class="configHeader">{ConfigFilename}</div>
+			<div class="configContent">
                 <input type="hidden" name="filename" value="{ConfigFilename}" />
                 <!-- BEGIN configSection -->
                     <div class="configSection">
+						<!-- IF AdvancedMode -->
                         <div style="float:right;">
                             <input class="editButton" type="submit" name="edit.{configSection.SectionName}" value="&nbsp;" />
                             <input class="deleteButton" type="submit" name="delete.{configSection.SectionName}" value="&nbsp;" />
                         </div>
+						<!-- ENDIF -->
                         <div class="configSectionName">{configSection.SectionName}</div>
                         <table border="0" padding="0" width="100%">
                             <!-- BEGIN configItem -->
                             <tr>
-                                <td>
+                                <td width="50%">
                                     <label for="{configSection.SectionName}.{configItem.ConfigName}">{configItem.ConfigName}: </label>
                                 </td>
                                 <td>
                                     <input type="text" id="{configSection.SectionName}.{configItem.ConfigName}" name="configuration.{configSection.SectionName}.{configItem.ConfigName}" value="{configItem.ConfigValue}" />
+									<!-- IF AdvancedMode -->
                                     <input class="editButton" type="submit" name="edit.{configSection.SectionName}.{configItem.ConfigName}" value="&nbsp;" />
                                     <input class="deleteButton" type="submit" name="delete.{configSection.SectionName}.{configItem.ConfigName}" value="&nbsp;" />
+									<!-- ENDIF -->
                                 </td>
                             </tr>
                             <!-- END configItem -->
@@ -220,22 +234,26 @@
                                 </td>
                             </tr>
                             <!-- END newConfigItem -->
+							<!-- IF AdvancedMode -->
                             <tr>
                                 <td colspan="2">
                                     <input class="addItem" type="submit" name="addItem.{configSection.SectionName}" value="+"/>
                                 </td>
                             </tr>
+							<!-- ENDIF -->
                         </table>
                     </div>
                 <!-- END configSection -->
+				<!-- IF AdvancedMode -->
                 <input class="addSectionButton configSection" type="submit" name="addSection" value="Add Section" />
+				<!-- ENDIF -->
                 <div style="clear: both;"></div>
                 <div class="actionButtons">
                     <input type="submit" id="save" name="submit" value="Save" />
                     <input type="reset" id="reset" name="reset" value="Reset" />
                 </div>
-            </form>
-        </div>
+			</div>
+		</form>
     </div>
 </body>
 

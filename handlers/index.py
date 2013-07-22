@@ -63,6 +63,14 @@ class index(object):
 
         self.PopulateConfigurationSections()
 
+        if 'Mode' not in self.kwargs or self.kwargs['Mode'] not in ['Simple', 'Advanced']:
+            if 'CurrentMode' in self.kwargs and self.kwargs['CurrentMode'] in ['Simple', 'Advanced']:
+                self.kwargs['Mode'] = self.kwargs['CurrentMode']
+            else:
+                self.kwargs['Mode'] = 'Simple'
+
+        self.page.SetVariable("AdvancedMode", self.kwargs['Mode'] == 'Advanced')
+
         return self.page.OutputPage()
 
     def PopulateConfigurationFromForm(self):
