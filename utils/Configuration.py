@@ -28,6 +28,11 @@ class ConfigurationItem(object):
 
     def AddChild(self, item):
         self.children.append(item)
+
+    def DeleteChild(self, name):
+        for child in self.children:
+            if child.Name == name:
+                self.children.remove(child)
         
     def __eq__(self, other):
         if isinstance(other, ConfigurationItem):
@@ -90,7 +95,7 @@ class XmlConfiguration(object):
 
 class Configuration(object):
     def __init__(self):
-        self.config = {}
+        self.config = ConfigurationItem('', '')
 
     def LoadFile(self, filename):
         with open(filename) as fp:

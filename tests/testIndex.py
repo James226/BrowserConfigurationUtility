@@ -208,3 +208,35 @@ class TestIndex(unittest.TestCase):
         indexPage.OutputPage()
 
         self.assertTrue(indexPage.page.page.Nests['']['AdvancedMode'])
+
+    def test_ShouldNotReloadConfigurationWhenPageConfigurationItemsSet(self):
+        indexPage = handlers.index.index((), {'configuration.Section1.Var': 'Val'})
+        
+        global loadCalled
+        loadCalled = False
+
+        def LoadFile(filename):
+            global loadCalled
+            loadCalled = True
+
+        indexPage.configuration.LoadFile = LoadFile
+
+        indexPage.OutputPage()
+
+        self.assertFalse(loadCalled)
+
+    def test_ShouldRemoveItemWhenDeleteButtonClicked(self):
+        indexPage = handlers.index.index((), {
+            'configuration.Section1.Variable1': 'TestD',
+            'configuration.Section1.Variable2': 'TestE',
+            'configuration.Section2.Variable1': 'TestF',
+            'configuration.Section2.NewItemName.1': 'Variable2',
+            'configuration.Section2.NewItemValue.1': 'TestG',
+            'delete.Section1': ' '
+        })
+
+        indexPage.SaveConfig = lambda: 0
+        indexPage.OutputPage()
+
+        self.assertEqual(1, len(indexPage.page.page.Nests['configSection']))
+        self.assertEqual('Section2', indexPage.page.page.Nests['configSection'][0]['SectionName'])

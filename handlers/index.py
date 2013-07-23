@@ -30,6 +30,8 @@ class index(object):
 
     def MergeNewConfigItemsWithExisting(self):
         for (section, configSection) in self.newConfigurationItems.items():
+            if self.configuration.config[section] is None:
+                self.configuration.config.AddChild(ConfigurationItem(section, ''))
             for (configId, config) in configSection.items():
                 self.configuration.config[section].AddChild(ConfigurationItem(config['Name'], config['Value']))
         self.newConfigurationItems = {}
@@ -48,9 +50,12 @@ class index(object):
         if self.isValidFilename(self.filename) or not os.path.exists(self.completeFilename):
             return 'Invalid filename specified: ' + self.filename
 
-        self.configuration.LoadFile(self.completeFilename)
-
         self.PopulateConfigurationFromForm()
+
+        if self.configuration.config.children == []:
+            self.configuration.LoadFile(self.completeFilename)
+
+        self.ProcessEditButtons()
 
         if 'submit' in self.kwargs:
             self.MergeNewConfigItemsWithExisting()
@@ -77,7 +82,9 @@ class index(object):
         for (name, value) in self.kwargs.items():
             nameParts = name.split('.')
             if nameParts[0] == 'configuration':
-                if len(nameParts) == 3:
+                if len(nameParts) == 2:
+                    self.PopulateExistingSectionsFromForm(nameParts, value)
+                elif len(nameParts) == 3:
                     self.PopulateExistingConfigurationFromForm(nameParts, value)
                 elif len(nameParts) == 4:
                     self.PopulateNewConfigurationFromForm(nameParts, value)
@@ -92,7 +99,13 @@ class index(object):
         elif splitName[2] == 'NewItemValue':
             self.newConfigurationItems[splitName[1]][splitName[3]]['Value'] = value
 
+    def PopulateExistingSectionsFromForm(self, splitName, value):
+        if self.configuration.config[splitName[1]] is None:
+            self.configuration.config.AddChild(ConfigurationItem(splitName[1], ''))
+
     def PopulateExistingConfigurationFromForm(self, splitName, value):
+        if self.configuration.config[splitName[1]] is None:
+            self.configuration.config.AddChild(ConfigurationItem(splitName[1], ''))
         section = self.configuration.config[splitName[1]]
         if section is None:
             section = ConfigurationItem(splitName[1], '')
@@ -104,6 +117,15 @@ class index(object):
             self.configuration.config[splitName[1]].AddChild(configItem)
         else:
             configItem.Value = value
+
+    def ProcessEditButtons(self):
+        for (name, value) in self.kwargs.items():
+            nameParts = name.split('.')
+            if nameParts[0] == 'delete':
+                if len(nameParts) == 2:
+                    self.configuration.config.DeleteChild(nameParts[1])
+                elif len(nameParts) == 3:
+                    self.configuration.config[nameParts[1]].DeleteChild(nameParts[2])
 
     def PopulateTabs(self):
         for configFilename in os.listdir(self.configPath):

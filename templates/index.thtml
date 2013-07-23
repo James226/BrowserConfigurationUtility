@@ -201,6 +201,7 @@
 			<div class="configContent">
                 <input type="hidden" name="filename" value="{ConfigFilename}" />
                 <!-- BEGIN configSection -->
+					<input type="hidden" name="configuration.{configSection.SectionName}" value="{SectionName}" />
                     <div class="configSection">
 						<!-- IF AdvancedMode -->
                         <div style="float:right;">

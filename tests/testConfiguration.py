@@ -70,3 +70,23 @@ class TestConfiguration(unittest.TestCase):
         self.assertMultiLineEqual(
             '''[Section1]\nvariable1 = TestA\nvariable2 = TestB\n\n[Section2]\nvariable3 = TestC\n\n[Section3]\n\n''',
             iniContents)
+    
+    def test_ShouldRemoveItemWhenDeleteChildCalled(self):
+        config = \
+            ConfigurationItem('', '', [
+                ConfigurationItem('Section1', '', [
+                    ConfigurationItem('variable1', 'TestA'),
+                    ConfigurationItem('variable2', 'TestB')
+                ]),
+                ConfigurationItem('Section2', '', [
+                    ConfigurationItem('variable3', 'TestC'),
+                ]),
+                ConfigurationItem('Section3', '')
+            ])
+
+        config.DeleteChild('Section1')
+
+        self.assertListEqual([ConfigurationItem('Section2', '', [
+                    ConfigurationItem('variable3', 'TestC'),
+                ]),
+                ConfigurationItem('Section3', '')], config.children)
