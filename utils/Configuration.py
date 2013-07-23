@@ -28,11 +28,14 @@ class ConfigurationItem(object):
 
     def AddChild(self, item):
         self.children.append(item)
+        self.children.sort(key=lambda c: c.Name)
 
     def DeleteChild(self, name):
         for child in self.children:
             if child.Name == name:
                 self.children.remove(child)
+                self.children.sort(key=lambda c: c.Name)
+
         
     def __eq__(self, other):
         if isinstance(other, ConfigurationItem):
@@ -42,6 +45,9 @@ class ConfigurationItem(object):
                 (len(self.children) == len(other.children)) and \
                 all([(c == oc) for c, oc in zip(self.children, other.children)])
         return False
+
+    def __repr__(self):
+        return repr((self.Name))
 
 class IniConfiguration(object):
     def LoadStream(self, stream):
