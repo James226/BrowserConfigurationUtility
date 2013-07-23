@@ -15,6 +15,7 @@ class index(object):
         self.configuration = utils.Configuration.Configuration()
         self.configPath = 'config/'
         self.newConfigurationItems = {}
+        self.pendingChanges = False
 
     def SaveConfig(self):
         backupDir = self.configPath + 'backup/' + self.filename + '/'
@@ -57,6 +58,11 @@ class index(object):
 
         self.ProcessEditButtons()
 
+        originalConfig = utils.Configuration.Configuration()
+        originalConfig.LoadFile(self.completeFilename)
+        if not self.configuration.config == originalConfig.config:
+            self.pendingChanges = True 
+
         if 'submit' in self.kwargs:
             self.MergeNewConfigItemsWithExisting()
             self.SaveConfig()
@@ -75,6 +81,7 @@ class index(object):
                 self.kwargs['Mode'] = 'Simple'
 
         self.page.SetVariable("AdvancedMode", self.kwargs['Mode'] == 'Advanced')
+        self.page.SetVariable("PendingChanges", self.pendingChanges)
 
         return self.page.OutputPage()
 

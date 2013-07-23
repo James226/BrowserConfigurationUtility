@@ -162,6 +162,19 @@
             width: 100%;
         }
 
+		.pendingChanges
+		{
+			margin-top: 20px;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: lightblue;
+            border-top: blue solid 2px;
+            border-bottom: blue solid 2px;
+            color: darkblue;
+            font-weight: bold;
+			text-align: center;
+		}
+
         #save
         {
             background: green url("/images/save.png") no-repeat scroll 5px;
@@ -246,9 +259,15 @@
                     </div>
                 <!-- END configSection -->
 				<!-- IF AdvancedMode -->
-                <input class="addSectionButton configSection" type="submit" name="addSection" value="Add Section" />
+				<input class="addSectionButton configSection" type="submit" name="addSection" value="Add Section" />
 				<!-- ENDIF -->
                 <div style="clear: both;"></div>
+
+				<!-- IF PendingChanges -->
+				<div class="pendingChanges">
+					There are currently pending changes, use the 'Save' button below to commit changes made.
+				</div>
+				<!-- ENDIF -->
                 <div class="actionButtons">
                     <input type="submit" id="save" name="submit" value="Save" />
                     <input type="reset" id="reset" name="reset" value="Reset" />

@@ -39,6 +39,7 @@ class ConfigurationItem(object):
             return \
                 self.Name == other.Name and \
                 self.Value == other.Value and \
+                (len(self.children) == len(other.children)) and \
                 all([(c == oc) for c, oc in zip(self.children, other.children)])
         return False
 
