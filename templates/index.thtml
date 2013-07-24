@@ -218,8 +218,7 @@
                     <div class="configSection">
 						<!-- IF AdvancedMode -->
                         <div style="float:right;">
-                            <input class="editButton" type="submit" name="edit={configSection.SectionName}" value="&nbsp;" />
-                            <input class="deleteButton" type="submit" name="delete={configSection.SectionName}" value="&nbsp;" />
+                            <input class="deleteButton" type="submit" name="delete={configSection.SectionName}" alt="Delete" value="&nbsp;" />
                         </div>
 						<!-- ENDIF -->
                         <div class="configSectionName">{configSection.SectionName}</div>
@@ -232,8 +231,7 @@
                                 <td>
                                     <input type="text" id="{configSection.SectionName}.{configItem.ConfigName}" name="configuration={configSection.SectionName}={configItem.ConfigName}" value="{configItem.ConfigValue}" />
 									<!-- IF AdvancedMode -->
-                                    <input class="editButton" type="submit" name="edit={configSection.SectionName}={configItem.ConfigName}" value="&nbsp;" />
-                                    <input class="deleteButton" type="submit" name="delete={configSection.SectionName}={configItem.ConfigName}" value="&nbsp;" />
+                                    <input class="deleteButton" type="submit" name="delete={configSection.SectionName}={configItem.ConfigName}" alt="Delete" value="&nbsp;" />
 									<!-- ENDIF -->
                                 </td>
                             </tr>
