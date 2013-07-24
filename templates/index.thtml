@@ -226,7 +226,7 @@
                         <table border="0" padding="0" width="100%">
                             <!-- BEGIN configItem -->
                             <tr>
-                                <td width="50%">
+                                <td width="40%">
                                     <label for="{configSection.SectionName}.{configItem.ConfigName}">{configItem.ConfigName}: </label>
                                 </td>
                                 <td>
