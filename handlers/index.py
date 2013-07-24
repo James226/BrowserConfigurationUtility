@@ -114,15 +114,15 @@ class index(object):
 
     def PopulateExistingConfigurationFromForm(self, splitName, value):
         if self.configuration.config[splitName[1]] is None:
-            self.configuration.config.AddChild(ConfigurationItem(splitName[1].lower(), ''))
+            self.configuration.config.AddChild(ConfigurationItem(splitName[1], ''))
         section = self.configuration.config[splitName[1]]
         if section is None:
             section = ConfigurationItem(splitName[1], '')
             self.configuration.config.AddChild(section)
 
-        configItem = section[splitName[2]]
+        configItem = section[splitName[2].lower()]
         if configItem is None:
-            configItem = ConfigurationItem(splitName[2], value)
+            configItem = ConfigurationItem(splitName[2].lower(), value)
             self.configuration.config[splitName[1]].AddChild(configItem)
         else:
             configItem.Value = value
