@@ -67,7 +67,7 @@ class TestIndex(unittest.TestCase):
         self.assertEqual(indexPage.page.page.Nests['fileTab'][1]['Filename'], 'Config4.ini')
 
     def test_ShouldAddNewConfigItemWhenAddItemButtonPressed(self):
-        indexPage = handlers.index.index((), {'addItem.Section1': '+'})
+        indexPage = handlers.index.index((), {'addItem=Section1': '+'})
 
         indexPage.configuration.LoadFile = lambda filename: 0
         indexPage.configuration.config = \
@@ -88,9 +88,9 @@ class TestIndex(unittest.TestCase):
 
     def test_ShouldRememberExistingConfigurationWhenNonSaveButtonPressed(self):
         indexPage = handlers.index.index((), {
-            'configuration.Section1.Variable1': 'TestD',
-            'configuration.Section1.Variable2': 'TestE',
-            'configuration.Section2.Variable1': 'TestF'
+            'configuration=Section1=Variable1': 'TestD',
+            'configuration=Section1=Variable2': 'TestE',
+            'configuration=Section2=Variable1': 'TestF'
         })
 
         indexPage.configuration.LoadFile = lambda filename: 0
@@ -115,11 +115,11 @@ class TestIndex(unittest.TestCase):
 
     def test_ShouldNotRememberNewItemNameOrValueAsExistingItems(self):
         indexPage = handlers.index.index((), {
-            'configuration.Section1.Variable1': 'TestD',
-            'configuration.Section1.Variable2': 'TestE',
-            'configuration.Section2.Variable1': 'TestF',
-            'configuration.Section2.NewItemName.1': 'Variable2',
-            'configuration.Section2.NewItemValue.1': 'TestG'
+            'configuration=Section1=Variable1': 'TestD',
+            'configuration=Section1=Variable2': 'TestE',
+            'configuration=Section2=Variable1': 'TestF',
+            'configuration=Section2=NewItemName=1': 'Variable2',
+            'configuration=Section2=NewItemValue=1': 'TestG'
         })
 
         indexPage.configuration.LoadFile = lambda filename: 0
@@ -142,11 +142,11 @@ class TestIndex(unittest.TestCase):
 
     def test_ShouldRememberNewItems(self):
         indexPage = handlers.index.index((), {
-            'configuration.Section1.Variable1': 'TestD',
-            'configuration.Section1.Variable2': 'TestE',
-            'configuration.Section2.Variable1': 'TestF',
-            'configuration.Section2.NewItemName.1': 'Variable2',
-            'configuration.Section2.NewItemValue.1': 'TestG'
+            'configuration=Section1=Variable1': 'TestD',
+            'configuration=Section1=Variable2': 'TestE',
+            'configuration=Section2=Variable1': 'TestF',
+            'configuration=Section2=NewItemName=1': 'Variable2',
+            'configuration=Section2=NewItemValue=1': 'TestG'
         })
 
         indexPage.configuration.LoadFile = lambda filename: 0
@@ -171,11 +171,11 @@ class TestIndex(unittest.TestCase):
 
     def test_ShouldAddNewConfigurationSaveButtonPressed(self):
         indexPage = handlers.index.index((), {
-            'configuration.Section1.Variable1': 'TestD',
-            'configuration.Section1.Variable2': 'TestE',
-            'configuration.Section2.Variable1': 'TestF',
-            'configuration.Section2.NewItemName.1': 'Variable2',
-            'configuration.Section2.NewItemValue.1': 'TestG',
+            'configuration=Section1=Variable1': 'TestD',
+            'configuration=Section1=Variable2': 'TestE',
+            'configuration=Section2=Variable1': 'TestF',
+            'configuration=Section2=NewItemName=1': 'Variable2',
+            'configuration=Section2=NewItemValue=1': 'TestG',
             'submit': 'Save'
         })
 
@@ -210,7 +210,7 @@ class TestIndex(unittest.TestCase):
         self.assertTrue(indexPage.page.page.Nests['']['AdvancedMode'])
 
     def test_ShouldNotReloadConfigurationWhenPageConfigurationItemsSet(self):
-        indexPage = handlers.index.index((), {'configuration.Section1.Var': 'Val'})
+        indexPage = handlers.index.index((), {'configuration=Section1=Var': 'Val'})
         
         global loadCalled
         loadCalled = False
@@ -227,12 +227,12 @@ class TestIndex(unittest.TestCase):
 
     def test_ShouldRemoveItemWhenDeleteButtonClicked(self):
         indexPage = handlers.index.index((), {
-            'configuration.Section1.Variable1': 'TestD',
-            'configuration.Section1.Variable2': 'TestE',
-            'configuration.Section2.Variable1': 'TestF',
-            'configuration.Section2.NewItemName.1': 'Variable2',
-            'configuration.Section2.NewItemValue.1': 'TestG',
-            'delete.Section1': ' '
+            'configuration=Section1=Variable1': 'TestD',
+            'configuration=Section1=Variable2': 'TestE',
+            'configuration=Section2=Variable1': 'TestF',
+            'configuration=Section2=NewItemName=1': 'Variable2',
+            'configuration=Section2=NewItemValue=1': 'TestG',
+            'delete=Section1': ' '
         })
 
         indexPage.SaveConfig = lambda: 0

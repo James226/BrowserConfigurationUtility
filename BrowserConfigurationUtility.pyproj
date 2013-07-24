@@ -77,15 +77,6 @@
     <Folder Include="utils\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="config\SampleIniFile - Copy %282%29.ini">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="config\SampleIniFile - Copy %283%29.ini">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="config\SampleIniFile - Copy.ini">
-      <SubType>Content</SubType>
-    </Content>
     <Content Include="config\SampleIniFile.ini">
       <SubType>Content</SubType>
     </Content>
