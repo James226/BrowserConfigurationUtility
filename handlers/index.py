@@ -34,7 +34,8 @@ class index(object):
             if self.configuration.config[section] is None:
                 self.configuration.config.AddChild(ConfigurationItem(section, ''))
             for (configId, config) in configSection.items():
-                self.configuration.config[section].AddChild(ConfigurationItem(config['Name'], config['Value']))
+                if self.configuration.config[section][config['Name']] is None:
+                    self.configuration.config[section].AddChild(ConfigurationItem(config['Name'], config['Value']))
         self.newConfigurationItems = {}
 
     def isValidFilename(self, filename):
@@ -103,7 +104,7 @@ class index(object):
         if not splitName[3] in self.newConfigurationItems[splitName[1]]:
             self.newConfigurationItems[splitName[1]][splitName[3]] = {}
         if splitName[2] == 'NewItemName':
-            self.newConfigurationItems[splitName[1]][splitName[3]]['Name'] = value
+            self.newConfigurationItems[splitName[1]][splitName[3]]['Name'] = value.lower()
         elif splitName[2] == 'NewItemValue':
             self.newConfigurationItems[splitName[1]][splitName[3]]['Value'] = value
 
@@ -113,7 +114,7 @@ class index(object):
 
     def PopulateExistingConfigurationFromForm(self, splitName, value):
         if self.configuration.config[splitName[1]] is None:
-            self.configuration.config.AddChild(ConfigurationItem(splitName[1], ''))
+            self.configuration.config.AddChild(ConfigurationItem(splitName[1].lower(), ''))
         section = self.configuration.config[splitName[1]]
         if section is None:
             section = ConfigurationItem(splitName[1], '')

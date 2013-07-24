@@ -2,10 +2,16 @@ import os
 import unittest
 
 import handlers.index
+import utils.Configuration
 from utils.Configuration import ConfigurationItem
 
 
 class TestIndex(unittest.TestCase):
+
+    def setUp(self):
+        os.path.exists = lambda path: True
+        utils.Configuration.Configuration.LoadFile = lambda inst, path: True
+
     def test_hasDefaultConfigFilename(self):
         indexPage = handlers.index.index((), {})
         indexPage.OutputPage()
