@@ -58,14 +58,15 @@ class index(object):
 
         self.ProcessEditButtons()
 
+        if 'submit' in self.kwargs:
+            self.MergeNewConfigItemsWithExisting()
+            self.SaveConfig()
+
         originalConfig = utils.Configuration.Configuration()
         originalConfig.LoadFile(self.completeFilename)
         if not self.configuration.config == originalConfig.config:
             self.pendingChanges = True 
 
-        if 'submit' in self.kwargs:
-            self.MergeNewConfigItemsWithExisting()
-            self.SaveConfig()
 
         self.page = template.Load("index")
         self.page.SetVariable("ConfigFilename", self.filename)
@@ -87,7 +88,7 @@ class index(object):
 
     def PopulateConfigurationFromForm(self):
         for (name, value) in self.kwargs.items():
-            nameParts = name.split('.')
+            nameParts = name.split('=')
             if nameParts[0] == 'configuration':
                 if len(nameParts) == 2:
                     self.PopulateExistingSectionsFromForm(nameParts, value)
@@ -127,7 +128,7 @@ class index(object):
 
     def ProcessEditButtons(self):
         for (name, value) in self.kwargs.items():
-            nameParts = name.split('.')
+            nameParts = name.split('=')
             if nameParts[0] == 'delete':
                 if len(nameParts) == 2:
                     self.configuration.config.DeleteChild(nameParts[1])
@@ -166,7 +167,7 @@ class index(object):
                     })
                     nextNewItem += 1
 
-            if 'addItem.' + section.Name in self.kwargs:
+            if 'addItem=' + section.Name in self.kwargs:
                 self.page.AddSubNest(sectionNest, "newConfigItem", {
                     'ConfigNumber': str(nextNewItem),
                     'ConfigName': '',

@@ -214,12 +214,12 @@
 			<div class="configContent">
                 <input type="hidden" name="filename" value="{ConfigFilename}" />
                 <!-- BEGIN configSection -->
-					<input type="hidden" name="configuration.{configSection.SectionName}" value="{SectionName}" />
+					<input type="hidden" name="configuration={configSection.SectionName}" value="{SectionName}" />
                     <div class="configSection">
 						<!-- IF AdvancedMode -->
                         <div style="float:right;">
-                            <input class="editButton" type="submit" name="edit.{configSection.SectionName}" value="&nbsp;" />
-                            <input class="deleteButton" type="submit" name="delete.{configSection.SectionName}" value="&nbsp;" />
+                            <input class="editButton" type="submit" name="edit={configSection.SectionName}" value="&nbsp;" />
+                            <input class="deleteButton" type="submit" name="delete={configSection.SectionName}" value="&nbsp;" />
                         </div>
 						<!-- ENDIF -->
                         <div class="configSectionName">{configSection.SectionName}</div>
@@ -230,10 +230,10 @@
                                     <label for="{configSection.SectionName}.{configItem.ConfigName}">{configItem.ConfigName}: </label>
                                 </td>
                                 <td>
-                                    <input type="text" id="{configSection.SectionName}.{configItem.ConfigName}" name="configuration.{configSection.SectionName}.{configItem.ConfigName}" value="{configItem.ConfigValue}" />
+                                    <input type="text" id="{configSection.SectionName}.{configItem.ConfigName}" name="configuration={configSection.SectionName}={configItem.ConfigName}" value="{configItem.ConfigValue}" />
 									<!-- IF AdvancedMode -->
-                                    <input class="editButton" type="submit" name="edit.{configSection.SectionName}.{configItem.ConfigName}" value="&nbsp;" />
-                                    <input class="deleteButton" type="submit" name="delete.{configSection.SectionName}.{configItem.ConfigName}" value="&nbsp;" />
+                                    <input class="editButton" type="submit" name="edit={configSection.SectionName}={configItem.ConfigName}" value="&nbsp;" />
+                                    <input class="deleteButton" type="submit" name="delete={configSection.SectionName}={configItem.ConfigName}" value="&nbsp;" />
 									<!-- ENDIF -->
                                 </td>
                             </tr>
@@ -241,17 +241,17 @@
                             <!-- BEGIN newConfigItem -->
                             <tr>
                                 <td>
-                                    <input type="text" name="configuration.{configSection.SectionName}.NewItemName.{newConfigItem.ConfigNumber}" value="{newConfigItem.ConfigName}" />
+                                    <input type="text" name="configuration={configSection.SectionName}=NewItemName={newConfigItem.ConfigNumber}" value="{newConfigItem.ConfigName}" />
                                 </td>
                                 <td>
-                                    <input type="text" name="configuration.{configSection.SectionName}.NewItemValue.{newConfigItem.ConfigNumber}" value="{newConfigItem.ConfigValue}" />
+                                    <input type="text" name="configuration={configSection.SectionName}=NewItemValue={newConfigItem.ConfigNumber}" value="{newConfigItem.ConfigValue}" />
                                 </td>
                             </tr>
                             <!-- END newConfigItem -->
 							<!-- IF AdvancedMode -->
                             <tr>
                                 <td colspan="2">
-                                    <input class="addItem" type="submit" name="addItem.{configSection.SectionName}" value="+"/>
+                                    <input class="addItem" type="submit" name="addItem={configSection.SectionName}" value="+"/>
                                 </td>
                             </tr>
 							<!-- ENDIF -->
