@@ -103,20 +103,20 @@ class TestIndex(unittest.TestCase):
         indexPage.configuration.config = \
             ConfigurationItem('', '', [
                 ConfigurationItem('Section1', '', [
-                    ConfigurationItem('Variable1', 'TestA'),
-                    ConfigurationItem('Variable2', 'TestB')
+                    ConfigurationItem('variable1', 'TestA'),
+                    ConfigurationItem('variable2', 'TestB')
                 ]),
                 ConfigurationItem('Section2', '', [
-                    ConfigurationItem('Variable1', 'TestC')
+                    ConfigurationItem('variable1', 'TestC')
                 ])
             ])
 
         indexPage.OutputPage()
 
-        self.assertDictEqual({'ConfigId': '1', 'ConfigName': 'Variable1', 'ConfigValue': 'TestF'},
+        self.assertDictEqual({'ConfigId': '1', 'ConfigName': 'variable1', 'ConfigValue': 'TestF'},
                              indexPage.page.page.Nests['configSection'][1]['configItem'][0])
 
-        self.assertDictEqual({'ConfigId': '2', 'ConfigName': 'Variable2', 'ConfigValue': 'TestE'},
+        self.assertDictEqual({'ConfigId': '2', 'ConfigName': 'variable2', 'ConfigValue': 'TestE'},
                              indexPage.page.page.Nests['configSection'][0]['configItem'][1])
 
     def test_ShouldNotRememberNewItemNameOrValueAsExistingItems(self):
@@ -171,7 +171,7 @@ class TestIndex(unittest.TestCase):
 
         self.assertListEqual(
             [
-                {'ConfigNumber': '1', 'ConfigName': 'Variable2', 'ConfigValue': 'TestG'}
+                {'ConfigNumber': '1', 'ConfigName': 'variable2', 'ConfigValue': 'TestG'}
             ],
             indexPage.page.page.Nests['configSection'][1]['newConfigItem'])
 
@@ -190,7 +190,7 @@ class TestIndex(unittest.TestCase):
 
         self.assertDictEqual({}, indexPage.newConfigurationItems)
         self.assertListEqual(
-            [ConfigurationItem('Variable1', 'TestF'), ConfigurationItem('Variable2', 'TestG')], 
+            [ConfigurationItem('variable1', 'TestF'), ConfigurationItem('variable2', 'TestG')], 
             indexPage.configuration.config['Section2'].children
         )
 
